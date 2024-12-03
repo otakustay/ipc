@@ -9,6 +9,6 @@ jobs:
     steps:
       - uses: apexskier/github-release-commenter@v1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           comment-template: |
             This issue is included in {release_link}.

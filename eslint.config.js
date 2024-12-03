@@ -1,3 +1,4 @@
+import globals from 'globals';
 import js from '@eslint/js';
 import ts from 'typescript-eslint';
 
@@ -7,6 +8,9 @@ export default ts.config(
     ...ts.configs.stylisticTypeChecked,
     {
         languageOptions: {
+            globals: {
+                ...globals.nodeBuiltin,
+            },
             parserOptions: {
                 projectService: true,
                 tsconfigRootDir: import.meta.dirname,
@@ -33,6 +37,7 @@ export default ts.config(
                     ignoreVoidOperator: true,
                 },
             ],
+            '@typescript-eslint/no-unnecessary-type-parameters': 'off',
         },
     }
 );
