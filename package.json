@@ -16,6 +16,10 @@
   "engines": {
     "node": ">= 18"
   },
+  "files": [
+    "esm",
+    "cjs"
+  ],
   "scripts": {
     "clean": "wireit",
     "build": "wireit",
