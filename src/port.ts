@@ -42,7 +42,7 @@ export class DirectPort implements Port {
 /**
  * Wraps a child process to a port.
  */
-export class ProcessPort implements Port {
+export class ChildProcessPort implements Port {
     private readonly process: ChildProcess;
 
     constructor(process: ChildProcess) {
@@ -57,3 +57,22 @@ export class ProcessPort implements Port {
         this.process.on('message', callback);
     }
 }
+
+// We already have a test case for this, but it runs in a child process, so ignore coverage here.
+/* v8 ignore start */
+export class ProcessPort implements Port {
+    constructor() {
+        if (!process.send) {
+            throw new Error('Current process is not spawned with IPC channel');
+        }
+    }
+
+    send(message: ExecutionMessage): void {
+        process.send?.(message);
+    }
+
+    listen(callback: (message: ExecutionMessage) => void): void {
+        process.on('message', callback);
+    }
+}
+/* v8 ignore stop */

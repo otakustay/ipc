@@ -2,6 +2,106 @@
 
 This is the inter-process communication infrastructure for this project, aimed to abstract message sending, receiving, and routing between processes and even within the same process.
 
+## Usage
+
+Here we are going to implement a random number and string generator, first we create a handler using `RequestHandler` class.
+
+```ts
+import {RequestHandler} from '@otakustay/ipc';
+
+class RandomNumberHandler extends RequestHandler<number, number> {
+    static action = 'randomNumber' as const;
+
+    async *handleRequest(count: number) {
+        for (let i = 0; i < count; ++i) {
+            yield Math.round(Math.random() * 10000);
+        }
+    }
+}
+
+class RandomStringHandler extends RequestHandler<number, string> {
+    static action = 'randomString' as const;
+
+    async *handleRequest(count: string) {
+        for (let i = 0; i < count.length; ++i) {
+            yield Math.random().toString(36).slice(-5);
+        }
+    }
+}
+```
+
+Then we create a server using `Server` class.
+
+```ts
+import {Server, ProtocolOf} from '@otakustay/ipc';
+import {RandomNumberHandler, RandomStringHandler} from './handlers';
+
+export type Protocol = ProtocolOf<typeof RandomNumberHandler | typeof RandomStringHandler>;
+
+class RandomServer extends Server<Protocol> {
+    protected initializeHandlers(): void {
+        this.registerHandler(RandomNumberHandler);
+        this.registerHandler(RandomStringHandler);
+    }
+}
+```
+
+By now this server can accept requests with an `action` of `randomNumber` and `randomString` (see `action` static property in handler classes), we are going to illustrate how to invoke the server.
+
+We need a communication channel between the client and server, this is abstracted by a `Port` class, suppose that server is running in a separate process, inside that standalone process we use a `ProcessPort` object for communication.
+
+```ts
+// In child process
+import {ProcessPort} from '@otakustay/ipc';
+
+const port = new ProcessPort();
+const server = new RandomServer();
+await server.connect(port);
+```
+
+On the client side, we have a reference to the `childProcess` variable, so we use `ChildProcessPort` to communicate with the server.
+
+```ts
+// In main process
+import childProcess from 'node:child_process';
+import {ChildProcessPort} from '@otakustay/ipc';
+import {Protocol} from './server';
+
+const process = childProcess.fork(echoScript);
+const port = new ChildProcessPort(process);
+const client = new Client<Protocol>(port);
+```
+
+The `client` object then have a `callStream` function yielding its handler results from server.
+
+```ts
+for await (const value of client.callStream('randomNumber', 10)) {
+    console.log(value); // log 10 random numbers
+}
+```
+
+If you only care the first value and want to treat the function call as a promise, use `call` function.
+
+```ts
+const result = await client.call('randomString', 10);
+console.log(result); // 1 random string
+```
+
+This library also provides a `DirectPort` to communicate between server and client in the same process.
+
+```ts
+import {DirectPort} from '@otakustay/ipc';
+
+const port = new DirectPort();
+const server = new RandomServer();
+await server.connect(port);
+const client = new Client<Protocol>(port);
+
+for await (const value of client.callStream('randomString', 10)) {
+    console.log(value); // log 10 random strings
+}
+```
+
 ## Architecture
 
 ### Port
@@ -156,3 +256,52 @@ After a server is created, connect it to a port using the `connect` method, and 
 const server = new CalculatorServer();
 await server.connect(port);
 ```
+
+## Example
+
+### Using LSP
+
+LSP (Language Server Protocol) is a protocol for IDEs but it also provides a very robust commnuication mechanism, to utilize it, we can simply create a `LanguageServerPort`.
+
+```ts
+import {Readable, Writable} from 'node:stream';
+import {
+    createMessageConnection,
+    MessageConnection,
+    StreamMessageReader,
+    StreamMessageWriter,
+} from 'vscode-jsonrpc/node.js';
+
+const LANGUAGE_SERVER_GENERIC_METHOD = 'genericExec';
+
+class LanguageServerPort implements Port {
+    private readonly connection: MessageConnection;
+    private readonly listeners = new Set<(message: any) => void>();
+
+    constructor(readable: Readable, writable: Writable) {
+        this.connection = createMessageConnection(
+            new StreamMessageReader(readable),
+            new StreamMessageWriter(writable)
+        );
+        this.connection.onNotification(
+            LANGUAGE_SERVER_GENERIC_METHOD,
+            (message: ExecutionMessage) => {
+                for (const listener of this.listeners) {
+                    listener(message);
+                }
+            }
+        );
+        this.connection.listen();
+    }
+
+    send(message: ExecutionMessage) {
+        this.connection.sendNotification(LANGUAGE_SERVER_GENERIC_METHOD, message).catch(() => {});
+    }
+
+    listen(callback: (message: ExecutionMessage) => void): void {
+        this.listeners.add(callback);
+    }
+}
+```
+
+This also works when developing an IDE extension already using LSP as its infrastructure.
