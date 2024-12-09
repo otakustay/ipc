@@ -1,8 +1,8 @@
 /* v8 ignore start */
-export {Port, DirectPort, ProcessPort} from './port.js';
+export {Port, DirectPort, ChildProcessPort, ProcessPort} from './port.js';
 export {Server} from './server.js';
 export {Client} from './client.js';
-export {RequestHandler} from './handler.js';
+export {RequestHandler, RequestHandlerClass, ProtocolOf} from './handler.js';
 export {
     ExecutionRequest,
     ExectuionResponse,
