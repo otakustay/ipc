@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/otakustay/ipc/compare/v1.0.0...v1.0.1) (2024-12-09)
+
+
+### Bug Fixes
+
+* export missing modules ([bb1e6da](https://github.com/otakustay/ipc/commit/bb1e6daa698c1ed6104414aafaf789efb0ed3190))
+
 ## 1.0.0 (2024-12-09)
 
 
