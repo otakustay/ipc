@@ -9,7 +9,7 @@ type In<P extends Record<keyof P, AnyHandle>, K extends Key<P>> = Parameters<P[K
 
 type Iteratee<T> = T extends AsyncIterable<infer I> ? I : never;
 
-// As constrained by `AnyHandle, the out type must be an `AsyncIterable`
+// As constrained by `AnyHandle`, the out type must be an `AsyncIterable`
 type Out<P extends Record<keyof P, AnyHandle>, K extends Key<P>> = ReturnType<P[K]>;
 
 /**
