@@ -1,7 +1,7 @@
 {
   "name": "@otakustay/ipc",
   "type": "module",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A unified protocol to call functions over multiple implement of port or message channel",
   "license": "Apache-2.0",
   "exports": {

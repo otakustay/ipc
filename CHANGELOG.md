@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/otakustay/ipc/compare/v2.1.0...v2.1.1) (2024-12-11)
+
+
+### Bug Fixes
+
+* add missing dependency nanoid ([caf60c3](https://github.com/otakustay/ipc/commit/caf60c30d4b554cdb1fc537289b29a99c4f113da))
+
 ## [2.1.0](https://github.com/otakustay/ipc/compare/v2.0.0...v2.1.0) (2024-12-11)
 
 
