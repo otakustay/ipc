@@ -31,7 +31,7 @@ test('respond chunk', async () => {
         action: 'test',
         payload: 1,
     };
-    const handler = new TestHandler(port, request);
+    const handler = new TestHandler(port, request, null);
     await handler.execute();
     expect(port.getResponseChunkValues()).toEqual([2, 3, 4]);
 });
@@ -45,7 +45,7 @@ test('notice', async () => {
         action: 'test',
         payload: 1,
     };
-    const handler = new TestHandler(port, request);
+    const handler = new TestHandler(port, request, null);
     await handler.execute();
     const notices = port.getNoticeMessages();
     expect(notices.length).toBe(1);
@@ -61,7 +61,7 @@ test('error', async () => {
         executionType: ExecutionType.Request,
         action: 'FAIL',
     };
-    const handler = new FailHandler(port, request);
+    const handler = new FailHandler(port, request, null);
     await handler.execute();
     const errors = port.getErrorMessages();
     expect(errors.length).toBe(1);
@@ -76,7 +76,7 @@ test('primitive error', async () => {
         executionType: ExecutionType.Request,
         action: 'FAIL',
     };
-    const handler = new DangerousErrorHandler(port, request);
+    const handler = new DangerousErrorHandler(port, request, null);
     await handler.execute();
     const errors = port.getErrorMessages();
     expect(errors.length).toBe(1);

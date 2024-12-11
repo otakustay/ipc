@@ -4,16 +4,19 @@ import {Port} from './port.js';
 /**
  * Handle a type of request when message arrives, it should execute as a iterator and yield response chunks.
  */
-export abstract class RequestHandler<I, O> {
+export abstract class RequestHandler<I, O, C = null> {
+    protected context: C;
+
     private readonly port: Port;
 
     private readonly request: ExecutionRequest;
 
     private currentChunkIndex = 0;
 
-    constructor(port: Port, request: ExecutionRequest) {
+    constructor(port: Port, request: ExecutionRequest, context: C) {
         this.port = port;
         this.request = request;
+        this.context = context;
     }
 
     /**
@@ -99,10 +102,14 @@ export type AnyHandle = (input: any) => AsyncIterable<any>;
 
 type Iteratee<T> = T extends AsyncIterable<infer U> ? U : never;
 
-export interface RequestHandlerClass<F extends AnyHandle> {
+type HandleIn<F extends AnyHandle> = Parameters<F>[0];
+
+type HandleOut<F extends AnyHandle> = Iteratee<ReturnType<F>>;
+
+export interface RequestHandlerClass<F extends AnyHandle, C = null> {
     action: string;
 
-    new(port: Port, request: ExecutionRequest): RequestHandler<Parameters<F>[0], Iteratee<ReturnType<F>>>;
+    new(port: Port, request: ExecutionRequest, context: C): RequestHandler<HandleIn<F>, HandleOut<F>, C>;
 }
 
 type Handle<H extends RequestHandlerClass<AnyHandle>> = InstanceType<H>['handleRequest'];
@@ -111,7 +118,7 @@ type In<H extends RequestHandlerClass<AnyHandle>> = Parameters<Handle<H>>[0];
 
 type Out<H extends RequestHandlerClass<AnyHandle>> = AsyncIterable<Iteratee<ReturnType<Handle<H>>>>;
 
-export type ProtocolOf<H extends RequestHandlerClass<AnyHandle>> = {
+export type ProtocolOf<H extends RequestHandlerClass<AnyHandle, any>> = {
     [K in H['action']]: H extends {action: K} ? (In<H>['length'] extends 0 ? () => Out<H>
             : (input: In<H>) => Out<H>)
         : never;

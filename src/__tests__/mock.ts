@@ -1,5 +1,11 @@
 import defer, {DeferredPromise} from 'p-defer';
-import {ExectuionResponse, ExecutionError, ExecutionMessage, ExecutionNotice, ExecutionType} from '../execution.js';
+import {
+    ExectuionResponse,
+    ExecutionError,
+    ExecutionMessage,
+    ExecutionNotice,
+    ExecutionType,
+} from '../execution.js';
 import {ProtocolOf, RequestHandler} from '../handler.js';
 import {DirectPort} from '../port.js';
 import {Server} from '../server.js';
@@ -136,5 +142,9 @@ export class TestServer extends Server<Protocol> {
         this.registerHandler(SubtractHandler);
         this.registerHandler(FailHandler);
         this.registerHandler(GreetingHandler);
+    }
+
+    protected async createContext() {
+        return null;
     }
 }

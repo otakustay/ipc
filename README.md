@@ -30,7 +30,7 @@ class RandomStringHandler extends RequestHandler<number, string> {
 }
 ```
 
-Then we create a server using `Server` class.
+Then we create a server using `Server` class, you don't need to take care of `createContext` method, we'll dive into it later.
 
 ```ts
 import {Server, ProtocolOf} from '@otakustay/ipc';
@@ -42,6 +42,10 @@ class RandomServer extends Server<Protocol> {
     protected initializeHandlers(): void {
         this.registerHandler(RandomNumberHandler);
         this.registerHandler(RandomStringHandler);
+    }
+
+    protected async createContext() {
+        return null;
     }
 }
 ```
@@ -183,7 +187,7 @@ On the implementation side, we define a `RequestHandler` object to handle a spec
 Be aware that the `handleRequest` method is a generator function. You can yield data but **don't use `return` statement**.
 
 ```ts
-class GreetingRequestHandler extends RequestHandler {
+class GreetingRequestHandler extends RequestHandler<{name: string}, string> {
     static action = 'greeting' as const;
 
     async *handleRequest(payload: {name: string}) {
@@ -197,7 +201,7 @@ Thrown errors from the `handleRequest` method will be automatically caught and s
 When you want to send some messages back to the client without influencing the function progress, such as doing some logging, the `notify` method is for you.
 
 ```ts
-class GreetingRequestHandler extends RequestHandler {
+class GreetingRequestHandler extends RequestHandler<{name: string}, string> {
     static action = 'greeting' as const;
 
     async *handleRequest(payload: {name: string}) {
@@ -255,6 +259,34 @@ After a server is created, connect it to a port using the `connect` method, and 
 ```ts
 const server = new CalculatorServer();
 await server.connect(port);
+```
+
+You are also able to define a `context` type in `RequestHandler`, then use it in `handleRequest` method.
+
+```ts
+class GreetingRequestHandler extends RequestHandler<{name: string}, string, {prefix: string}> {
+    static action = 'greeting' as const;
+
+    async *handleRequest(payload: {name: string}) {
+        yield `${this.context.prefix} ${payload.name}`;
+    }
+}
+```
+
+In this case the `Server` class must implement `createContext` to satisfy all its request handler types.
+
+```ts
+type Protocol = ProtocolOf<typeof GreetingRequestHandler>;
+
+class HelloServer extends Server<Protocol, {prefix: string}> {
+    initializeHandlers() {
+        this.registerHandler(GreetingRequestHandler);
+    }
+
+    createContext(): {prefix: string} {
+        return {prefix: 'Hello'};
+    }
+}
 ```
 
 ## Example

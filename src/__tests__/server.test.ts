@@ -1,5 +1,7 @@
 import {test, expect} from 'vitest';
 import {ExecutionMessage, ExecutionType} from '../execution.js';
+import {ProtocolOf, RequestHandler} from '../handler.js';
+import {Server} from '../server.js';
 import {TestPort, TestServer} from './mock.js';
 
 test('call handler', async () => {
@@ -78,4 +80,44 @@ test('error', async () => {
     const errors = port.getErrorMessages();
     expect(errors.length).toBe(1);
     expect(errors.at(0)?.reason).toBe('Error');
+});
+
+test('context', async () => {
+    class AddHandler extends RequestHandler<string, number, {radix: number}> {
+        static action = 'add' as const;
+
+        async *handleRequest(payload: string): AsyncIterable<number> {
+            yield parseInt(payload, this.context.radix) + 1;
+        }
+    }
+
+    class CalculatorServer extends Server<ProtocolOf<typeof AddHandler>, {radix: number}> {
+        private readonly radix: number;
+
+        constructor(radix: number) {
+            super();
+            this.radix = radix;
+        }
+
+        protected initializeHandlers(): void {
+            this.registerHandler(AddHandler);
+        }
+
+        protected createContext(): Promise<{radix: number}> {
+            return Promise.resolve({radix: this.radix});
+        }
+    }
+
+    const port = new TestPort();
+    const server = new CalculatorServer(16);
+    await server.connect(port);
+    const request: ExecutionMessage = {
+        taskId: 'test',
+        executionId: 'test',
+        executionType: ExecutionType.Request,
+        action: 'add',
+        payload: 'ff',
+    };
+    await port.sendRequestWaitResponse(request);
+    expect(port.getResponseChunkValues()).toEqual([256]);
 });
