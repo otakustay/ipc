@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/otakustay/ipc/compare/v2.1.1...v2.1.2) (2024-12-11)
+
+
+### Bug Fixes
+
+* update dependency @types/node to v22.10.2 ([#12](https://github.com/otakustay/ipc/issues/12)) ([5bdf1d6](https://github.com/otakustay/ipc/commit/5bdf1d6e7ffbc7c7346f3c269f30bf4ea4860acc))
+
 ## [2.1.1](https://github.com/otakustay/ipc/compare/v2.1.0...v2.1.1) (2024-12-11)
 
 
