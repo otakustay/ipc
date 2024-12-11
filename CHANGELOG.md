@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/otakustay/ipc/compare/v2.0.0...v2.1.0) (2024-12-11)
+
+
+### Features
+
+* allow handler to get task id ([e5c3710](https://github.com/otakustay/ipc/commit/e5c3710349ff8bdb3d5b672a9996b142d75f3489))
+
 ## [2.0.0](https://github.com/otakustay/ipc/compare/v1.0.1...v2.0.0) (2024-12-11)
 
 
