@@ -37,6 +37,10 @@ export abstract class RequestHandler<I, O, C = null> {
         }
     }
 
+    protected getTaskId() {
+        return this.request.taskId;
+    }
+
     /**
      * Respond a chunk to client, will result in a `yield` value on client side.
      *

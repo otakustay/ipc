@@ -13,6 +13,12 @@ class TestHandler extends RequestHandler<number, number> {
     }
 }
 
+class TaskIdHandler extends RequestHandler<void, string> {
+    async *handleRequest() {
+        yield this.getTaskId();
+    }
+}
+
 class DangerousErrorHandler extends RequestHandler<void, string> {
     async *handleRequest() {
         yield 'fatal';
@@ -21,6 +27,20 @@ class DangerousErrorHandler extends RequestHandler<void, string> {
         throw ['Error', 'Fatal'];
     }
 }
+
+test('get task id', async () => {
+    const port = new TestPort();
+    const request: ExecutionMessage = {
+        taskId: 'test',
+        executionId: 'test',
+        executionType: ExecutionType.Request,
+        action: 'test',
+        payload: 1,
+    };
+    const handler = new TaskIdHandler(port, request, null);
+    await handler.execute();
+    expect(port.getResponseChunkValues()).toEqual(['test']);
+});
 
 test('respond chunk', async () => {
     const port = new TestPort();
