@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/otakustay/ipc/compare/v1.0.1...v2.0.0) (2024-12-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* `Server` now requires to implement `createContext` method
+
+### Features
+
+* add context to request handler ([f809c49](https://github.com/otakustay/ipc/commit/f809c491587bce2e6e7255b5792eca71e3ff5d9c))
+
 ## [1.0.1](https://github.com/otakustay/ipc/compare/v1.0.0...v1.0.1) (2024-12-09)
 
 
