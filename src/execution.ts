@@ -101,3 +101,38 @@ export class ExecutionManager {
         this.tasks.delete(key);
     }
 }
+
+export function isExecutionMessage(input: any): input is ExecutionMessage {
+    if (!input || typeof input !== 'object') {
+        return false;
+    }
+
+    /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+    if (typeof input.taskId !== 'string' || typeof input.executionId !== 'string') {
+        return false;
+    }
+
+    return (
+        input.executionType === ExecutionType.Request
+        || input.executionType === ExecutionType.Response
+        || input.executionType === ExecutionType.Error
+        || input.executionType === ExecutionType.Notice
+    );
+    /* eslint-enable @typescript-eslint/no-unsafe-member-access */
+}
+
+export function isExecutionRequest(input: any): input is ExecutionRequest {
+    return isExecutionMessage(input) && input.executionType === ExecutionType.Request;
+}
+
+export function isExecutionResponse(input: any): input is ExectuionResponse {
+    return isExecutionMessage(input) && input.executionType === ExecutionType.Response;
+}
+
+export function isExecutionError(input: any): input is ExecutionError {
+    return isExecutionMessage(input) && input.executionType === ExecutionType.Error;
+}
+
+export function isExecutionNotice(input: any): input is ExecutionNotice {
+    return isExecutionMessage(input) && input.executionType === ExecutionType.Notice;
+}

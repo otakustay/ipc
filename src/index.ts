@@ -11,4 +11,9 @@ export {
     ExecutionMessage,
     ExecutionType,
     ExecutionManager,
+    isExecutionMessage,
+    isExecutionRequest,
+    isExecutionResponse,
+    isExecutionError,
+    isExecutionNotice,
 } from './execution.js';

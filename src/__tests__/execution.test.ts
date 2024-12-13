@@ -1,5 +1,14 @@
 import {test, expect} from 'vitest';
-import {ExecutionManager} from '../execution.js';
+import {
+    ExecutionManager,
+    isExecutionMessage,
+    isExecutionRequest,
+    isExecutionResponse,
+    isExecutionError,
+    isExecutionNotice,
+    ExecutionMessage,
+    ExecutionType,
+} from '../execution.js';
 
 test('put and consume', async () => {
     const manager = new ExecutionManager();
@@ -67,4 +76,81 @@ test('consume before error', async () => {
     const pendingValue = iterator.next();
     manager.error('key', 0, 'Error');
     await expect(pendingValue).rejects.toThrow('Error');
+});
+
+test('is message', () => {
+    const messate: ExecutionMessage = {
+        taskId: 'test',
+        executionId: 'test',
+        executionType: ExecutionType.Request,
+        action: 'test',
+        payload: 1,
+    };
+    expect(isExecutionMessage(messate)).toBe(true);
+});
+
+test('null not message', () => {
+    expect(isExecutionMessage(null)).toBe(false);
+});
+
+test('not message without taskId', () => {
+    const message = {
+        name: 'test',
+    };
+    expect(isExecutionMessage(message)).toBe(false);
+});
+
+test('not message with incorrect type', () => {
+    const message = {
+        taskId: 'test',
+        executionId: 'test',
+        executionType: 'request',
+        action: 'test',
+    };
+    expect(isExecutionMessage(message)).toBe(false);
+});
+
+test('is request', () => {
+    const request: ExecutionMessage = {
+        taskId: 'test',
+        executionId: 'test',
+        executionType: ExecutionType.Request,
+        action: 'test',
+        payload: 1,
+    };
+    expect(isExecutionRequest(request)).toBe(true);
+});
+
+test('is response', () => {
+    const message: ExecutionMessage = {
+        taskId: 'test',
+        executionId: 'test',
+        executionType: ExecutionType.Response,
+        data: 1,
+        chunkIndex: 0,
+        done: false,
+    };
+    expect(isExecutionResponse(message)).toBe(true);
+});
+
+test('is notice', () => {
+    const notice: ExecutionMessage = {
+        taskId: 'test',
+        executionId: 'test',
+        executionType: ExecutionType.Notice,
+        action: 'test',
+        payload: 1,
+    };
+    expect(isExecutionNotice(notice)).toBe(true);
+});
+
+test('is error', () => {
+    const error: ExecutionMessage = {
+        taskId: 'test',
+        executionId: 'test',
+        executionType: ExecutionType.Error,
+        reason: 'test',
+        chunkIndex: 0,
+    };
+    expect(isExecutionError(error)).toBe(true);
 });
