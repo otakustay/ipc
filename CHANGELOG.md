@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/otakustay/ipc/compare/v2.3.0...v2.3.1) (2024-12-17)
+
+
+### Bug Fixes
+
+* export required types for server and client ([4bc12dc](https://github.com/otakustay/ipc/commit/4bc12dc92825585477b4f9d0868adae45639be3e))
+
 ## [2.3.0](https://github.com/otakustay/ipc/compare/v2.2.0...v2.3.0) (2024-12-17)
 
 
