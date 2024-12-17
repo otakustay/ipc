@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.0](https://github.com/otakustay/ipc/compare/v2.2.0...v2.3.0) (2024-12-17)
+
+
+### Features
+
+* add handleNotice method to Client ([#17](https://github.com/otakustay/ipc/issues/17)) ([f475a25](https://github.com/otakustay/ipc/commit/f475a250cd01ea13bd5a4f5d9f6321d6284d3701))
+* add namespace to server and client ([#18](https://github.com/otakustay/ipc/issues/18)) ([cf574ac](https://github.com/otakustay/ipc/commit/cf574ac18a27ca6c2c70362ee350fe727c698f8b))
+
 ## [2.2.0](https://github.com/otakustay/ipc/compare/v2.1.1...v2.2.0) (2024-12-13)
 
 
