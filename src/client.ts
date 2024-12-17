@@ -1,5 +1,5 @@
 import {nanoid} from 'nanoid';
-import {ExecutionManager, ExecutionMessage, ExecutionType} from './execution.js';
+import {ExecutionManager, ExecutionMessage, ExecutionNotice, ExecutionType} from './execution.js';
 import {Port} from './port.js';
 import {AnyHandle} from './handler.js';
 
@@ -65,6 +65,10 @@ export class Client<P extends Record<keyof P, AnyHandle>> {
         yield* this.executions.start<Out<P, K>>(executionId);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    protected handleNotice(notice: ExecutionNotice) {
+    }
+
     private receiveMessage(message: ExecutionMessage) {
         if (message.executionType === ExecutionType.Error) {
             this.executions.error(message.executionId, message.chunkIndex, message.reason);
@@ -76,6 +80,9 @@ export class Client<P extends Record<keyof P, AnyHandle>> {
             else {
                 this.executions.put(message.executionId, message.chunkIndex, message.data);
             }
+        }
+        else if (message.executionType === ExecutionType.Notice) {
+            this.handleNotice(message);
         }
     }
 }

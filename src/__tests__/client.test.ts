@@ -1,6 +1,7 @@
 import {test, expect} from 'vitest';
 import {Client} from '../client.js';
 import {TestPort, TestServer, Protocol} from './mock.js';
+import {ExecutionNotice, ExecutionType} from '../execution.js';
 
 test('call promise', async () => {
     const port = new TestPort();
@@ -46,4 +47,24 @@ test('throw on error', async () => {
     catch (ex) {
         expect(ex instanceof Error && ex.message).toBe('Error');
     }
+});
+
+test('handle notice', async () => {
+    const results: ExecutionNotice[] = [];
+    class TestClient extends Client<Protocol> {
+        protected handleNotice(notice: ExecutionNotice): void {
+            results.push(notice);
+        }
+    }
+    const port = new TestPort();
+    const server = new TestServer();
+    await server.connect(port);
+    const client = new TestClient(port);
+    await client.call('test', 'initialize');
+    expect(results.length).toBe(1);
+    const notice = results[0];
+    expect(notice.taskId).toEqual('test');
+    expect(notice.executionType).toBe(ExecutionType.Notice);
+    expect(notice.action).toBe('initializing');
+    expect(notice.payload).toEqual({from: 'handler'});
 });

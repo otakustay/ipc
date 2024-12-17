@@ -297,25 +297,27 @@ LSP (Language Server Protocol) is a protocol for IDEs but it also provides a ver
 
 ```ts
 import {Readable, Writable} from 'node:stream';
+import {Port, ExecutionMessage} from '@otakustay/ipc';
 import {
-    createMessageConnection,
-    MessageConnection,
+    createConnection,
+    Connection,
     StreamMessageReader,
     StreamMessageWriter,
-} from 'vscode-jsonrpc/node.js';
+} from 'vscode-languageserver/node';
 
 const LANGUAGE_SERVER_GENERIC_METHOD = 'genericExec';
 
-class LanguageServerPort implements Port {
-    private readonly connection: MessageConnection;
+export class LanguageServerPort implements Port {
+    private readonly connection: Connection;
+
     private readonly listeners = new Set<(message: any) => void>();
 
     constructor(readable: Readable, writable: Writable) {
-        this.connection = createMessageConnection(
+        this.connection = createConnection(
             new StreamMessageReader(readable),
             new StreamMessageWriter(writable)
         );
-        this.connection.onNotification(
+        this.connection.onRequest(
             LANGUAGE_SERVER_GENERIC_METHOD,
             (message: ExecutionMessage) => {
                 for (const listener of this.listeners) {
@@ -327,7 +329,7 @@ class LanguageServerPort implements Port {
     }
 
     send(message: ExecutionMessage) {
-        this.connection.sendNotification(LANGUAGE_SERVER_GENERIC_METHOD, message).catch(() => {});
+        this.connection.sendRequest(LANGUAGE_SERVER_GENERIC_METHOD, message).catch(() => {});
     }
 
     listen(callback: (message: ExecutionMessage) => void): void {

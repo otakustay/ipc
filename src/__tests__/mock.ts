@@ -80,7 +80,9 @@ export class TestPort extends DirectPort {
 export class InitializeHandler extends RequestHandler<void, void> {
     static action = 'initialize' as const;
 
+    // eslint-disable-next-line require-yield
     async *handleRequest() {
+        this.notify('initializing', {from: 'handler'});
     }
 }
 
