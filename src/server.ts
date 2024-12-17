@@ -2,15 +2,22 @@ import {ExecutionMessage, ExecutionRequest, ExecutionType} from './execution.js'
 import {AnyHandle, RequestHandler, RequestHandlerClass} from './handler.js';
 import {Port} from './port.js';
 
+export interface ServerInit {
+    namespace?: string;
+}
+
 /**
  * A server maps message from a port to request handlers.
  */
 export abstract class Server<P extends Record<keyof P, AnyHandle>, C = null> {
+    namespace?: string;
+
     protected port: Port | null = null;
 
     protected readonly handlers = new Map<string, RequestHandlerClass<AnyHandle, C>>();
 
-    constructor() {
+    constructor(init?: ServerInit) {
+        this.namespace = init?.namespace;
         this.initializeHandlers();
     }
 
@@ -52,6 +59,10 @@ export abstract class Server<P extends Record<keyof P, AnyHandle>, C = null> {
 
     private async handleRequest(request: ExecutionMessage) {
         if (request.executionType !== ExecutionType.Request) {
+            return;
+        }
+
+        if (request.namespace !== this.namespace) {
             return;
         }
 

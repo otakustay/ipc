@@ -8,6 +8,7 @@ export enum ExecutionType {
 }
 
 export interface ExecutionRequest {
+    namespace?: string;
     taskId: string;
     executionId: string;
     executionType: ExecutionType.Request;

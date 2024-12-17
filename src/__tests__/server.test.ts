@@ -121,3 +121,18 @@ test('context', async () => {
     await port.sendRequestWaitResponse(request);
     expect(port.getResponseChunkValues()).toEqual([256]);
 });
+
+test('namespace not match', async () => {
+    const port = new TestPort();
+    const server = new TestServer({namespace: 'test'});
+    await server.connect(port);
+    const request: ExecutionMessage = {
+        taskId: 'test',
+        executionId: 'test',
+        executionType: ExecutionType.Request,
+        action: 'greeting',
+        payload: 'user',
+    };
+    await port.sendWait(request);
+    expect(port.getResponseMessages().length).toBe(0);
+});

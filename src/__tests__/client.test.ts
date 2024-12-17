@@ -68,3 +68,12 @@ test('handle notice', async () => {
     expect(notice.action).toBe('initializing');
     expect(notice.payload).toEqual({from: 'handler'});
 });
+
+test('namespace match', async () => {
+    const port = new TestPort();
+    const server = new TestServer({namespace: 'test'});
+    await server.connect(port);
+    const client = new Client<Protocol>(port, {namespace: 'test'});
+    const message = await client.call('test', 'greeting', 'user');
+    expect(message).toBe('Hello user');
+});

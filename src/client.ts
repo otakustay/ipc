@@ -12,16 +12,23 @@ type Iteratee<T> = T extends AsyncIterable<infer I> ? I : never;
 // As constrained by `AnyHandle`, the out type must be an `AsyncIterable`
 type Out<P extends Record<keyof P, AnyHandle>, K extends Key<P>> = ReturnType<P[K]>;
 
+export interface ClientInit {
+    namespace?: string;
+}
+
 /**
  * A client is an initiator of a function call via a port.
  */
 export class Client<P extends Record<keyof P, AnyHandle>> {
+    private readonly namespace?: string;
+
     private readonly port: Port;
 
     private readonly executions = new ExecutionManager();
 
-    constructor(port: Port) {
+    constructor(port: Port, init?: ClientInit) {
         this.port = port;
+        this.namespace = init?.namespace;
         this.port.listen(message => this.receiveMessage(message));
     }
 
@@ -54,6 +61,7 @@ export class Client<P extends Record<keyof P, AnyHandle>> {
     async *callStreaming<K extends Key<P>>(taskId: string, action: K, payload?: In<P, K>): Out<P, K> {
         const executionId = nanoid();
         const request: ExecutionMessage = {
+            namespace: this.namespace,
             taskId,
             executionId,
             executionType: ExecutionType.Request,
