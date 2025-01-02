@@ -10,7 +10,7 @@ export interface ServerInit {
  * A server maps message from a port to request handlers.
  */
 export abstract class Server<P extends Record<keyof P, AnyHandle>, C = null> {
-    namespace?: string;
+    private namespace?: string;
 
     protected port: Port | null = null;
 

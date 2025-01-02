@@ -22,9 +22,9 @@ export interface ClientInit {
 export class Client<P extends Record<keyof P, AnyHandle>> {
     private readonly namespace?: string;
 
-    private readonly port: Port;
-
     private readonly executions = new ExecutionManager();
+
+    protected readonly port: Port;
 
     constructor(port: Port, init?: ClientInit) {
         this.port = port;
