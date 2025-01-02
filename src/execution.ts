@@ -70,10 +70,7 @@ export class ExecutionManager {
      */
     put(key: string, index: number, data: any) {
         const task = this.tasks.get(key);
-
-        if (task) {
-            task.putAt(index, data);
-        }
+        task?.putAt(index, data);
     }
 
     /**
@@ -85,10 +82,8 @@ export class ExecutionManager {
      */
     error(key: string, index: number, reason: string) {
         const task = this.tasks.get(key);
-
-        if (task) {
-            task.errorAt(index, reason);
-        }
+        task?.errorAt(index, reason);
+        this.tasks.delete(key);
     }
 
     /**
