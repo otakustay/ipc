@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.3.2](https://github.com/otakustay/ipc/compare/v2.3.1...v2.3.2) (2025-01-03)
+
+
+### Bug Fixes
+
+* update dependency @types/node to v22.10.3 ([#33](https://github.com/otakustay/ipc/issues/33)) ([60e4b3a](https://github.com/otakustay/ipc/commit/60e4b3aa52b32be84b5794a711cb33af995f0817))
+* update dependency @types/node to v22.10.4 ([#35](https://github.com/otakustay/ipc/issues/35)) ([72489c3](https://github.com/otakustay/ipc/commit/72489c34506a5eb0768b420b75962fa0827c0a61))
+* update dependency @types/node to v22.10.5 ([#37](https://github.com/otakustay/ipc/issues/37)) ([84a2f40](https://github.com/otakustay/ipc/commit/84a2f408d3ac7a97636cf641a51b9f78c6fb35bd))
+
 ## [2.3.1](https://github.com/otakustay/ipc/compare/v2.3.0...v2.3.1) (2024-12-17)
 
 
