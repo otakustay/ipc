@@ -99,7 +99,7 @@ export class Client<P extends Record<keyof P, AnyHandle>> {
     }
 }
 
-class TaskIdBoundClient<P extends Record<keyof P, AnyHandle>> {
+export class TaskIdBoundClient<P extends Record<keyof P, AnyHandle>> {
     private readonly taskId: string;
 
     private readonly client: Client<P>;

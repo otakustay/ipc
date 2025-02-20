@@ -1,7 +1,7 @@
 /* v8 ignore start */
 export {Port, DirectPort, ChildProcessPort, ProcessPort} from './port.js';
 export {Server, ServerInit} from './server.js';
-export {Client, ClientInit} from './client.js';
+export {Client, ClientInit, TaskIdBoundClient} from './client.js';
 export {RequestHandler, RequestHandlerClass, ProtocolOf} from './handler.js';
 export {
     ExecutionRequest,
