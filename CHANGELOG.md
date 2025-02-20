@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/otakustay/ipc/compare/v2.4.0...v2.5.0) (2025-02-20)
+
+
+### Features
+
+* expose TaskIdBoundClient class ([76ef5a1](https://github.com/otakustay/ipc/commit/76ef5a19b6c85ab9941a45ac33540235a90c48eb))
+
 ## [2.4.0](https://github.com/otakustay/ipc/compare/v2.3.1...v2.4.0) (2025-02-20)
 
 
