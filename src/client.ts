@@ -73,6 +73,10 @@ export class Client<P extends Record<keyof P, AnyHandle>> {
         yield* this.executions.start<Out<P, K>>(executionId);
     }
 
+    forTask(taskId: string): TaskIdBoundClient<P> {
+        return new TaskIdBoundClient(taskId, this);
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected handleNotice(notice: ExecutionNotice) {
     }
@@ -92,5 +96,25 @@ export class Client<P extends Record<keyof P, AnyHandle>> {
         else if (message.executionType === ExecutionType.Notice) {
             this.handleNotice(message);
         }
+    }
+}
+
+class TaskIdBoundClient<P extends Record<keyof P, AnyHandle>> {
+    private readonly taskId: string;
+
+    private readonly client: Client<P>;
+
+    constructor(taskId: string, client: Client<P>) {
+        this.taskId = taskId;
+        this.client = client;
+    }
+
+    async call<K extends Key<P>>(action: K, payload?: In<P, K>): Promise<Iteratee<Out<P, K>>> {
+        return this.client.call(this.taskId, action, payload);
+    }
+
+    // @ts-expect-error We believe `Out<P, K>` is an `AsyncIterable` already.
+    async *callStreaming<K extends Key<P>>(action: K, payload?: In<P, K>): Out<P, K> {
+        yield* this.client.callStreaming(this.taskId, action, payload);
     }
 }

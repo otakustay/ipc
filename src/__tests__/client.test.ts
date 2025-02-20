@@ -77,3 +77,17 @@ test('namespace match', async () => {
     const message = await client.call('test', 'greeting', 'user');
     expect(message).toBe('Hello user');
 });
+
+test('bind task id', async () => {
+    const port = new TestPort();
+    const server = new TestServer();
+    await server.connect(port);
+    const client = new Client<Protocol>(port).forTask('test');
+    const result = await client.call('greeting', 'user');
+    expect(result).toBe('Hello user');
+    const values: number[] = [];
+    for await (const value of client.callStreaming('add', 1)) {
+        values.push(value);
+    }
+    expect(values).toEqual([2, 3, 4]);
+});
