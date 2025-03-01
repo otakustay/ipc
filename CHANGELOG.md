@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.5.1](https://github.com/otakustay/ipc/compare/v2.5.0...v2.5.1) (2025-03-01)
+
+
+### Bug Fixes
+
+* update dependency @types/node to v22.13.5 ([#84](https://github.com/otakustay/ipc/issues/84)) ([704d80b](https://github.com/otakustay/ipc/commit/704d80b6a200825a54b761c0900b2f639fe1b9ac))
+* update dependency @types/node to v22.13.8 ([#92](https://github.com/otakustay/ipc/issues/92)) ([7ae678f](https://github.com/otakustay/ipc/commit/7ae678ff3f3bbbe1e20e44dfd93dbc1a86fac497))
+* update dependency nanoid to v5.1.2 ([#87](https://github.com/otakustay/ipc/issues/87)) ([9d11c59](https://github.com/otakustay/ipc/commit/9d11c59dce9741ac75b09b6118eea826bac46ef4))
+
 ## [2.5.0](https://github.com/otakustay/ipc/compare/v2.4.0...v2.5.0) (2025-02-20)
 
 
