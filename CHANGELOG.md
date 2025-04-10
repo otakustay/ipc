@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.5.1](https://github.com/otakustay/ipc/compare/v2.5.0...v2.5.1) (2025-04-10)
+
+
+### Bug Fixes
+
+* update dependency @types/node to v22.13.10 ([#103](https://github.com/otakustay/ipc/issues/103)) ([a002fd6](https://github.com/otakustay/ipc/commit/a002fd698d0ccf02511cfe67bf5cddfa8a0618e6))
+* update dependency @types/node to v22.13.11 ([#114](https://github.com/otakustay/ipc/issues/114)) ([f2febcb](https://github.com/otakustay/ipc/commit/f2febcb9e4e529fba5a31cf35be0f8e89a20e1c8))
+* update dependency @types/node to v22.13.12 ([#117](https://github.com/otakustay/ipc/issues/117)) ([b3b1ea1](https://github.com/otakustay/ipc/commit/b3b1ea1418bbfaa787b2c4d84ee44ae05753e74f))
+* update dependency @types/node to v22.13.13 ([#119](https://github.com/otakustay/ipc/issues/119)) ([e17053c](https://github.com/otakustay/ipc/commit/e17053c8e550e31278261d8f4665dae525ce8311))
+* update dependency @types/node to v22.13.14 ([#121](https://github.com/otakustay/ipc/issues/121)) ([c7499ca](https://github.com/otakustay/ipc/commit/c7499ca7d66f8ca0f5bb9f631a714895720c6fe4))
+* update dependency @types/node to v22.13.16 ([#126](https://github.com/otakustay/ipc/issues/126)) ([2f1ddfd](https://github.com/otakustay/ipc/commit/2f1ddfddd2cd4e309dd69dadb06becf9866e0181))
+* update dependency @types/node to v22.13.17 ([#127](https://github.com/otakustay/ipc/issues/127)) ([3c24e56](https://github.com/otakustay/ipc/commit/3c24e5663205d49d6b6f0a32fce7bb93b97ddd86))
+* update dependency @types/node to v22.13.5 ([#84](https://github.com/otakustay/ipc/issues/84)) ([704d80b](https://github.com/otakustay/ipc/commit/704d80b6a200825a54b761c0900b2f639fe1b9ac))
+* update dependency @types/node to v22.13.8 ([#92](https://github.com/otakustay/ipc/issues/92)) ([7ae678f](https://github.com/otakustay/ipc/commit/7ae678ff3f3bbbe1e20e44dfd93dbc1a86fac497))
+* update dependency @types/node to v22.13.9 ([#95](https://github.com/otakustay/ipc/issues/95)) ([36e445f](https://github.com/otakustay/ipc/commit/36e445f02e70dcdb05f850bfd9db17a7112e95a9))
+* update dependency @types/node to v22.14.0 ([#128](https://github.com/otakustay/ipc/issues/128)) ([d6d15a1](https://github.com/otakustay/ipc/commit/d6d15a1c389b8a741738f1b9f43e8f88fdcc937a))
+* update dependency nanoid to v5.1.2 ([#87](https://github.com/otakustay/ipc/issues/87)) ([9d11c59](https://github.com/otakustay/ipc/commit/9d11c59dce9741ac75b09b6118eea826bac46ef4))
+* update dependency nanoid to v5.1.3 ([#100](https://github.com/otakustay/ipc/issues/100)) ([bc195c5](https://github.com/otakustay/ipc/commit/bc195c5291d59c4e3cdb8f9c77ebeb2809c5377d))
+* update dependency nanoid to v5.1.4 ([#108](https://github.com/otakustay/ipc/issues/108)) ([75642b4](https://github.com/otakustay/ipc/commit/75642b47f82142d4d4635159d358bdef9b6e11b1))
+* update dependency nanoid to v5.1.5 ([#112](https://github.com/otakustay/ipc/issues/112)) ([cef8138](https://github.com/otakustay/ipc/commit/cef813846d5af9b72e23f2de27885de59b04e561))
+
 ## [2.5.0](https://github.com/otakustay/ipc/compare/v2.4.0...v2.5.0) (2025-02-20)
 
 
