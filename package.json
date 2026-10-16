@@ -115,6 +115,6 @@
   "dependencies": {
     "@otakustay/async-iterator": "^1.1.1",
     "@types/node": "^24.0.0",
-    "nanoid": "^5.1.0"
+    "nanoid": "^6.0.0"
   }
 }
